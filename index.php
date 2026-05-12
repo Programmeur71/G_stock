@@ -1,14 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+    // header("location:login")
+?>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>G_Stock</title>
-</head>
-
-<body>
-    Bonjours
-</body>
-
-</html>
+<script>
+// window.location.href = "Vue/pages/auth/login"
+window.location.href = "login"
+</script>

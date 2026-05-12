@@ -1,0 +1,12 @@
+#result-list{
+    float:left;
+    list-style:none;
+    margin-top: 5px;
+    padding:0;
+    width:100%;
+/*    position: absolute;*/
+}
+
+#result-list li{padding: 10px; background: #A7D595; border-bottom: #fff 1px solid;}
+
+#result-list li:hover{background:#3F9673;cursor: pointer;}

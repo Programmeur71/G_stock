@@ -1,0 +1,134 @@
+:root {
+  --primary-color: #28a745;
+  --secondary-color: #1e7e34;
+  --bg-gradient: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  --text-color: #333;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-gradient);
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--text-color);
+  overflow: hidden;
+}
+
+.cyc {
+  width: 100%;
+  padding: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 450px;
+  text-align: center;
+  animation: fadeIn 0.6s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.logo-section h3 {
+  color: var(--primary-color);
+  font-weight: 700;
+  margin-bottom: 30px;
+  letter-spacing: 1px;
+}
+
+.form-floating-custom {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.form-floating-custom input {
+  width: 100%;
+  padding: 15px 20px;
+  border: 2px solid #eee;
+  border-radius: 12px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  outline: none;
+}
+
+.form-floating-custom input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 8px rgba(40, 167, 69, 0.2);
+}
+
+.btn-login {
+  width: 100%;
+  padding: 15px;
+  background: var(--primary-color);
+  border: none;
+  border-radius: 12px;
+  color: white;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.btn-login:hover {
+  background: var(--secondary-color);
+}
+
+.alert-custom {
+  background: #f8d7da;
+  color: #721c24;
+  padding: 12px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 576px) {
+  .login-card {
+    padding: 30px 20px;
+  }
+}
+
+/* Hidden control buttons */
+.form_controle, .form_comtrole {
+  width: 40px;
+  height: 40px;
+  position: fixed;
+  z-index: 1000;
+  opacity: 0.1;
+  cursor: pointer;
+}
+
+.form_controle { top: 0; right: 0; }
+.form_comtrole { bottom: 0; left: 0; }
+
+.licence {
+  color: #fff;
+  font-size: 14px;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: rgba(0,0,0,0.3);
+  padding: 5px 10px;
+  border-radius: 5px;
+}
