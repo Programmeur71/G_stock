@@ -97,6 +97,12 @@ if (count($route) == 1) {
       require_once 'Vue/templates/footer.php';
     break;
 
+    case 'profile':
+      require_once 'Vue/templates/header.php';
+        echo $route[0];
+      require_once 'Vue/templates/footer.php';
+    break;
+
     default:
       header("location:404.php");
     break;
