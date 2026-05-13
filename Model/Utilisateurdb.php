@@ -1,63 +1,21 @@
-<?php 
-require_once 'Database.php';
+<?php
+require_once 'BaseModel.php';
 
-class Utilisateurdb
+class Utilisateurdb extends Model
 {
-	private $db;
-	private $id;
-	private $table;
-
-	public function __construct(){
-        $this->db = new Database();
-        $this->id = "id_user";
-        $this->table = "users";
+    public function __construct()
+    {
+        parent::__construct('users', 'id_user');
     }
 
-
-	public	function get_user($id = null)
-	{
-		if ($id == null) {
-
-			$pdo = " SELECT * FROM $this->table";
-
-            $rqt = $this->db->requette($pdo);
-
-            $data = $this->db->recupere($rqt, false);
-
-		} else {
-
-			$pdo = " SELECT * FROM $this->table WHERE $this->id=?";
-
-			$params = [$id];
-
-			$rqt = $this->db->requette($pdo, $params);
-
-			$data = $this->db->recupere($rqt);
-
-		}
-
-		return $data[0];
-	}
-
-	public function set_user($nom,$prenom,$email,$password,$id=null){
-        if ($id == null) {
-            $pdo = " UPDATE $this->table SET nom=?, prenom=?, email=?, password=? WHERE $this->id=?";
-
-            $params = [$nom, $prenom, $email, $password, $id];
-
-            $rqt = $this->db->requette($pdo, $params);
-
-            return $rqt[0];
+    public function save($nom, $prenom, $email, $password, $id = null)
+    {
+        if ($id === null) {
+            $sql = "INSERT INTO {$this->table} (nom, prenom, email, password) VALUES (?, ?, ?, ?)";
+            return $this->db->requette($sql, [$nom, $prenom, $email, $password]);
         } else {
-            $pdo = " INSERT INTO $this->table SET nom=?, prenom=?, email=?, password=?";
-
-            $params = [$nom, $prenom, $email, $password];
-
-            $rqt = $this->db->requette($pdo, $params);
-
-            return $rqt[1];
+            $sql = "UPDATE {$this->table} SET nom=?, prenom=?, email=?, password=? WHERE {$this->primaryKey}=?";
+            return $this->db->requette($sql, [$nom, $prenom, $email, $password, $id]);
         }
-	}
-
+    }
 }
- ?>
