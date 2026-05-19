@@ -43,14 +43,13 @@ class Database
 
 	public function recupere($rqt, $donnee = true)
 	{
-		$data = null;
-
-		$rqt->SetFetchMode(PDO::FETCH_OBJ);
+		$stmt = is_array($rqt) ? $rqt[0] : $rqt;
+		$stmt->SetFetchMode(PDO::FETCH_OBJ);
 
 		if ($donnee == true) {
-			$datas = $rqt->fetch();
+			$datas = $stmt->fetch();
 		} else {
-			$datas = $rqt->fetchAll();
+			$datas = $stmt->fetchAll();
 		}
 
 		return $datas;

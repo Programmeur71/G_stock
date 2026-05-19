@@ -1,6 +1,6 @@
 <?php
 
-require_once 'Database.php';
+require_once 'Model/Database.php';
 
 abstract class Model
 {
@@ -26,8 +26,7 @@ abstract class Model
     {
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = ?";
         $rqt = $this->db->requette($sql, [$id]);
-        $data = $this->db->recupere($rqt);
-        return $data[0] ?? null;
+        return $this->db->recupere($rqt);
     }
 
     public function delete($id)

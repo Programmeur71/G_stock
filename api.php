@@ -1,6 +1,8 @@
 <?php
 // api.php - Routeur centralisé pour les requêtes AJAX
 
+require_once 'Model/Model.php';
+
 // Si les paramètres nécessaires ne sont pas présents, on arrête l'exécution silencieusement
 // pour éviter d'interférer avec la navigation classique du site.
 if (!isset($_REQUEST['entity']) || !isset($_REQUEST['action'])) {

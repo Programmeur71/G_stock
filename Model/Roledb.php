@@ -1,5 +1,5 @@
 <?php
-require_once 'BaseModel.php';
+require_once 'Model/BaseModel.php';
 
 class Roledb extends Model
 {

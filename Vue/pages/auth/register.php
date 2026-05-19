@@ -1,17 +1,17 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 
 <head>
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Pages / Register - NiceAdmin Bootstrap Template</title>
-    <meta content="" name="description">
-    <meta content="" name="keywords">
+    <title>mboaStock - Inscription</title>
+    <meta content="mboaStock - Gestion de stock intelligente" name="description">
+    <meta content="stock, gestion, mboaStock" name="keywords">
 
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="assets/img/wdesktop.png" rel="icon">
+    <link href="assets/img/wdesktop.png" rel="apple-touch-icon">
 
     <!-- Google Fonts -->
     <link href="https://fonts.gstatic.com" rel="preconnect">
@@ -30,14 +30,14 @@
 
     <!-- Template Main CSS File -->
     <link href="assets/css/style.css" rel="stylesheet">
-
-    <!-- =======================================================
-  * Template Name: NiceAdmin
-  * Updated: Nov 17 2023 with Bootstrap v5.3.2
-  * Template URL: https://bootstrapmade.com/nice-admin-bootstrap-admin-html-template/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    <style>
+        body {
+            background: #f6f9ff;
+        }
+        .logo span {
+            color: #012970;
+        }
+    </style>
 </head>
 
 <body>
@@ -52,9 +52,9 @@
                         <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
                             <div class="d-flex justify-content-center py-4">
-                                <a href="index.html" class="logo d-flex align-items-center w-auto">
-                                    <img src="assets/img/logo.png" alt="">
-                                    <span class="d-none d-lg-block">NiceAdmin</span>
+                                <a href="#" class="logo d-flex flex-column align-items-center w-auto text-decoration-none text-center">
+                                    <img src="assets/img/wdesktop.png" alt="mboaStock Logo" style="max-height: 80px;" class="mb-2">
+                                    <span class="d-lg-block fs-2 fw-bold">mboaStock</span>
                                 </a>
                             </div><!-- End Logo -->
 
@@ -63,55 +63,57 @@
                                 <div class="card-body">
 
                                     <div class="pt-4 pb-2">
-                                        <h5 class="card-title text-center pb-0 fs-4">Create an Account</h5>
-                                        <p class="text-center small">Enter your personal details to create account</p>
+                                        <h5 class="card-title text-center pb-0 fs-4">Créer un compte</h5>
+                                        <p class="text-center small">Entrez vos détails personnels pour créer un compte</p>
                                     </div>
 
-                                    <form class="row g-3 needs-validation" novalidate>
+                                    <form class="row g-3 needs-validation" novalidate id="registerForm">
                                         <div class="col-12">
-                                            <label for="yourName" class="form-label">Your Name</label>
+                                            <label for="yourName" class="form-label">Nom</label>
                                             <input type="text" name="name" class="form-control" id="yourName" required>
-                                            <div class="invalid-feedback">Please, enter your name!</div>
+                                            <div class="invalid-feedback">S'il vous plaît, entrez votre nom !</div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourEmail" class="form-label">Your Email</label>
+                                            <label for="yourFirstName" class="form-label">Prénom</label>
+                                            <input type="text" name="firstname" class="form-control" id="yourFirstName" required>
+                                            <div class="invalid-feedback">S'il vous plaît, entrez votre prénom !</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourContact" class="form-label">Contact (Téléphone)</label>
+                                            <input type="text" name="contact" class="form-control" id="yourContact" required>
+                                            <div class="invalid-feedback">S'il vous plaît, entrez votre numéro de téléphone !</div>
+                                        </div>
+
+                                        <div class="col-12">
+                                            <label for="yourEmail" class="form-label">Email</label>
                                             <input type="email" name="email" class="form-control" id="yourEmail"
                                                 required>
-                                            <div class="invalid-feedback">Please enter a valid Email adddress!</div>
+                                            <div class="invalid-feedback">S'il vous plaît, entrez une adresse email valide !</div>
                                         </div>
 
                                         <div class="col-12">
-                                            <label for="yourUsername" class="form-label">Username</label>
-                                            <div class="input-group has-validation">
-                                                <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                                <input type="text" name="username" class="form-control"
-                                                    id="yourUsername" required>
-                                                <div class="invalid-feedback">Please choose a username.</div>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12">
-                                            <label for="yourPassword" class="form-label">Password</label>
+                                            <label for="yourPassword" class="form-label">Mot de passe</label>
                                             <input type="password" name="password" class="form-control"
                                                 id="yourPassword" required>
-                                            <div class="invalid-feedback">Please enter your password!</div>
+                                            <div class="invalid-feedback">S'il vous plaît, entrez votre mot de passe !</div>
                                         </div>
 
                                         <div class="col-12">
                                             <div class="form-check">
                                                 <input class="form-check-input" name="terms" type="checkbox" value=""
                                                     id="acceptTerms" required>
-                                                <label class="form-check-label" for="acceptTerms">I agree and accept the
-                                                    <a href="#">terms and conditions</a></label>
-                                                <div class="invalid-feedback">You must agree before submitting.</div>
+                                                <label class="form-check-label" for="acceptTerms">J'accepte les
+                                                    <a href="#">termes et conditions</a></label>
+                                                <div class="invalid-feedback">Vous devez accepter avant de soumettre.</div>
                                             </div>
                                         </div>
                                         <div class="col-12">
-                                            <button class="btn btn-primary w-100" type="submit">Create Account</button>
+                                            <button class="btn btn-primary w-100" type="submit">Créer le compte</button>
                                         </div>
                                         <div class="col-12">
-                                            <p class="small mb-0"> <a href="login">Log in</a>
+                                            <p class="small mb-0">Déjà un compte ? <a href="login">Se connecter</a>
                                             </p>
                                         </div>
                                     </form>
@@ -143,6 +145,53 @@
 
     <!-- Template Main JS File -->
     <script src="assets/js/main.js"></script>
+    <script type="text/javascript" src="assets/dist/js/Jquery.js"></script>
+    <script type="text/javascript" src="assets/dist/js/sweetalert2.all.min.js"></script>
+
+    <script type="text/javascript">
+    $(document).ready(function() {
+        $('#registerForm').submit(function(e) {
+            e.preventDefault();
+            
+            if (this.checkValidity() === false) {
+                e.stopPropagation();
+                $(this).addClass('was-validated');
+                return;
+            }
+
+            $.ajax({
+                url: 'api.php?entity=utilisateur&action=register',
+                type: 'POST',
+                data: $(this).serialize(),
+                dataType: 'json',
+                success: function(response) {
+                    if (response.status === 'success') {
+                        Swal.fire({
+                            type: 'success',
+                            title: 'Succès',
+                            text: response.message
+                        }).then(() => {
+                            window.location.href = 'login';
+                        });
+                    } else {
+                        Swal.fire({
+                            type: 'error',
+                            title: 'Erreur',
+                            text: response.message
+                        });
+                    }
+                },
+                error: function() {
+                    Swal.fire({
+                        type: 'error',
+                        title: 'Erreur',
+                        text: 'Une erreur est survenue lors de la communication avec le serveur.'
+                    });
+                }
+            });
+        });
+    });
+    </script>
 
 </body>
 

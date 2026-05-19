@@ -24,4 +24,24 @@ abstract class Controller
     {
         return $this->model->delete($id);
     }
+
+    protected function sendJson($data) {
+        header('Content-Type: application/json');
+        echo json_encode($data);
+        exit;
+    }
+
+    protected function checkPermission($permissionName) {
+        // Les administrateurs ont tous les droits
+        $currentRole = strtoupper($_SESSION['user']->role ?? '');
+        if ($currentRole === 'ADMINISTRATEUR') {
+            return true;
+        }
+
+        if (!isset($_SESSION['user']->permissions) || !in_array($permissionName, $_SESSION['user']->permissions)) {
+            $this->sendJson(['status' => 'error', 'message' => 'Accès refusé : Permission insuffisante (' . $permissionName . ')']);
+            return false;
+        }
+        return true;
+    }
 }
