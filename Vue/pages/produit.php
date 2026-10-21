@@ -18,6 +18,7 @@
                         <th>Nom</th>
                         <th>Prix Achat</th>
                         <th>Prix Vente</th>
+                        <th>Seuil Alerte</th>
                         <th class="all">Actions</th>
                     </tr>
                 </thead>
@@ -49,6 +50,11 @@
                     <div class="mb-3">
                         <label class="form-label">Prix Vente</label>
                         <input type="number" step="0.01" name="prix_vente" id="pPrixVente" class="form-control" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Stock d'Alerte</label>
+                        <input type="number" name="alert" id="pAlert" class="form-control" value="5" required>
+                        <div class="form-text">Seuil en dessous duquel une notification sera générée.</div>
                     </div>
                     <div class="mb-3">
                         <label class="form-label">Photo du produit</label>
@@ -127,8 +133,9 @@ function loadProduits() {
                 <td>${p.nom}</td>
                 <td>${parseFloat(p.prix_achat).toLocaleString()} FCFA</td>
                 <td>${parseFloat(p.prix_vente).toLocaleString()} FCFA</td>
+                <td><span class="badge bg-warning">${p.alert}</span></td>
                 <td class="actions-column">
-                    <button class="btn btn-sm btn-info" onclick='editProduit(${JSON.stringify(p)})'><i class="bi bi-pencil"></i></button>
+                    <button class="btn btn-sm btn-info text-white" onclick='editProduit(${JSON.stringify(p)})'><i class="bi bi-pencil"></i></button>
                     <button class="btn btn-sm btn-danger" onclick="deleteProduit(${p.id_produit})"><i class="bi bi-trash"></i></button>
                 </td>
             </tr>`;
@@ -151,6 +158,7 @@ function editProduit(p) {
     $('#pNom').val(p.nom); 
     $('#pPrixAchat').val(p.prix_achat); 
     $('#pPrixVente').val(p.prix_vente);
+    $('#pAlert').val(p.alert);
     $('#old_photo').val(p.photo);
     
     if (p.photo) {

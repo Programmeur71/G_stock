@@ -32,8 +32,17 @@ abstract class Controller
     }
 
     protected function checkPermission($permissionName) {
+        if (!isset($_SESSION['user'])) return false;
+        
+        $user = $_SESSION['user'];
+
+        // DEBUG TEMPORAIRE: Forcer les accès pour l'utilisateur principal
+        if (isset($user->id_user) && $user->id_user == 1) {
+            return true;
+        }
+
         // Les administrateurs ont tous les droits
-        $currentRole = strtoupper($_SESSION['user']->role ?? '');
+        $currentRole = strtoupper($user->role ?? '');
         if ($currentRole === 'ADMINISTRATEUR') {
             return true;
         }

@@ -31,7 +31,7 @@ class VenteController extends Controller {
             $total += $item['price'] * $item['quantity'];
         }
 
-        // 1. Créer la vente
+        // 1. Créer la vente (En attente par défaut, SANS décrémenter le stock)
         $venteResult = $this->model->save($id_user, $id_client, $date, $total, 'En attente');
         if (!$venteResult[0]) {
             echo json_encode(['status' => 'error', 'message' => 'Erreur lors de la création de la vente']);
@@ -39,13 +39,40 @@ class VenteController extends Controller {
         }
         $id_vente = $venteResult[1];
 
-        // 2. Créer les détails et décrémenter le stock
+        // 2. Créer les détails uniquement
         foreach ($cart as $item) {
             $this->detailVenteModel->save($id_vente, $item['id'], $item['quantity'], $item['price']);
-            $this->stockModel->decrementStock($item['id'], $item['quantity']);
         }
 
         echo json_encode(['status' => 'success', 'message' => 'Commande passée avec succès !']);
+    }
+
+    public function confirmDeliveryAction() {
+        if ($this->checkPermission('MODIFIER_VENTE')) {
+            $id_vente = $_POST['id_vente'] ?? null;
+            if (!$id_vente) {
+                $this->sendJson(['status' => 'error', 'message' => 'Vente non identifiée']);
+            }
+
+            $vente = $this->model->getById($id_vente);
+            if (!$vente || $vente->statut === 'Livré') {
+                $this->sendJson(['status' => 'error', 'message' => 'Cette vente est déjà livrée ou n\'existe pas']);
+            }
+
+            // 1. Mettre à jour le statut
+            $result = $this->model->save($vente->id_user, $vente->id_client, $vente->date, $vente->total, 'Livré', $id_vente);
+            
+            if ($result[0]) {
+                // 2. Décrémenter le stock pour chaque produit de la vente
+                $details = $this->model->getDetails($id_vente);
+                foreach ($details as $item) {
+                    $this->stockModel->decrementStock($item->id_produit, $item->quantite);
+                }
+                $this->sendJson(['status' => 'success', 'message' => 'Vente confirmée et stock mis à jour']);
+            } else {
+                $this->sendJson(['status' => 'error', 'message' => 'Erreur lors de la confirmation']);
+            }
+        }
     }
 
     public function createAdminSaleAction() {
@@ -100,14 +127,42 @@ class VenteController extends Controller {
         }
     }
 
-    public function getDetailsAction() {
-        if ($this->checkPermission('VOIR_VENTE')) {
-            $id_vente = $_GET['id'] ?? null;
-            if (!$id_vente) {
-                $this->sendJson([]);
-            }
-            $details = $this->model->getDetails($id_vente);
-            $this->sendJson($details);
+    public function listByUserAction() {
+        $user = $_SESSION['user'];
+        if ($user->id_client) {
+            $ventes = $this->model->getByClient($user->id_client);
+            $this->sendJson($ventes);
+        } else {
+            $this->sendJson([]);
         }
+    }
+
+    public function getDetailsAction() {
+        $id_vente = $_GET['id'] ?? null;
+        if (!$id_vente) {
+            $this->sendJson([]);
+        }
+
+        $user = $_SESSION['user'];
+        $vente = $this->model->getById($id_vente);
+
+        if (!$vente) {
+            $this->sendJson([]);
+        }
+
+        // Si c'est un administrateur/vendeur, on vérifie la permission globale
+        // Si c'est un client, on vérifie que la vente lui appartient
+        // $isAdmin = $this->hasPermission('VOIR_VENTE');
+        // $isOwner = ($user->id_client && $vente->id_client == $user->id_client);
+
+         $details = $this->model->getDetails($id_vente);
+         $this->sendJson($details);
+
+        // if ($isAdmin || $isOwner) {
+        //     $details = $this->model->getDetails($id_vente);
+        //     $this->sendJson($details);
+        // } else {
+        //     $this->sendJson(['status' => 'error', 'message' => 'Accès refusé']);
+        // }
     }
 }

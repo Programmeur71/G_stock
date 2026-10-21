@@ -54,7 +54,7 @@
                             <div class="d-flex justify-content-center py-4">
                                 <a href="#" class="logo d-flex flex-column align-items-center w-auto text-decoration-none text-center">
                                     <img src="assets/img/wdesktop.png" alt="mboaStock Logo" style="max-height: 80px;" class="mb-2">
-                                    <span class="d-lg-block fs-2 fw-bold">mboaStock</span>
+                                    <!-- <span class="d-lg-block fs-2 fw-bold">mboaStock</span> -->
                                 </a>
                             </div>
 

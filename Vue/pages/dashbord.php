@@ -95,7 +95,7 @@
         </div>
 
         <!-- Daily Sales Chart -->
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Ventes Quotidiennes <span>| Mois en cours</span></h5>
@@ -105,7 +105,7 @@
         </div>
 
         <!-- Monthly Sales Chart -->
-        <div class="col-12">
+        <div class="col-6">
             <div class="card">
                 <div class="card-body">
                     <h5 class="card-title">Ventes Mensuelles <span>| Année en cours</span></h5>

@@ -33,10 +33,16 @@ $details = $db->recupere($rqt_details, false);
 // 3. Génération du PDF
 $pdf = new FPDF();
 $pdf->AddPage();
+
+// Logo
+if (file_exists('../img/wdesktop.png')) {
+    $pdf->Image('../img/wdesktop.png', 160, 10, 40);
+}
+
 $pdf->SetFont('Arial', 'B', 16);
 
 // En-tête
-$pdf->Cell(0, 10, mb_convert_encoding("FACTURE G_STOCK", 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
+$pdf->Cell(0, 10, mb_convert_encoding("FACTURE MboaStock", 'ISO-8859-1', 'UTF-8'), 0, 1, 'C');
 $pdf->SetFont('Arial', '', 10);
 $pdf->Cell(0, 10, mb_convert_encoding("Date : " . $vente->date, 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');
 $pdf->Cell(0, 5, mb_convert_encoding("Facture N° : #" . $vente->id_vente, 'ISO-8859-1', 'UTF-8'), 0, 1, 'R');

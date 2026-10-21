@@ -18,14 +18,14 @@ class Produitdb extends Model
         return $this->db->recupere($rqt, false);
     }
 
-    public function save($nom, $prix_achat, $prix_vente, $photo = null, $id = null)
+    public function save($nom, $prix_achat, $prix_vente, $photo = null, $alert = 5, $id = null)
     {
         if ($id === null) {
-            $sql = "INSERT INTO {$this->table} (nom, prix_achat, prix_vente, photo) VALUES (?, ?, ?, ?)";
-            return $this->db->requette($sql, [$nom, $prix_achat, $prix_vente, $photo]);
+            $sql = "INSERT INTO {$this->table} (nom, prix_achat, prix_vente, photo, alert) VALUES (?, ?, ?, ?, ?)";
+            return $this->db->requette($sql, [$nom, $prix_achat, $prix_vente, $photo, $alert]);
         } else {
-            $sql = "UPDATE {$this->table} SET nom=?, prix_achat=?, prix_vente=?, photo=? WHERE {$this->primaryKey}=?";
-            return $this->db->requette($sql, [$nom, $prix_achat, $prix_vente, $photo, $id]);
+            $sql = "UPDATE {$this->table} SET nom=?, prix_achat=?, prix_vente=?, photo=?, alert=? WHERE {$this->primaryKey}=?";
+            return $this->db->requette($sql, [$nom, $prix_achat, $prix_vente, $photo, $alert, $id]);
         }
     }
 }

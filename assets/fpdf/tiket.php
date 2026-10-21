@@ -34,9 +34,14 @@ $details = $db->recupere($rqt_details, false);
 $pdf = new FPDF('P', 'mm', [80, 200]);
 $pdf->SetMargins(5, 5, 5);
 $pdf->AddPage();
-$pdf->SetFont('Arial', 'B', 12);
 
-$pdf->Cell(0, 5, "G_STOCK", 0, 1, 'C');
+// Logo
+if (file_exists('../img/wmobile.png')) {
+    $pdf->Image('../img/wmobile.png', 55, 5, 20);
+}
+$pdf->Ln(2);
+$pdf->SetFont('Arial', 'B', 12);
+$pdf->Cell(0, 5, "MboaStock", 0, 1, 'C');
 $pdf->SetFont('Arial', '', 8);
 $pdf->Cell(0, 5, "Ticket : #" . $vente->id_vente, 0, 1, 'C');
 $pdf->Cell(0, 5, "Date : " . $vente->date, 0, 1, 'C');

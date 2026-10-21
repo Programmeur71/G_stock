@@ -9,4 +9,9 @@ class DashboardController extends Controller {
         $stats = $this->model->getStats();
         $this->sendJson($stats);
     }
+
+    public function getNotificationsAction() {
+        $notifications = $this->model->getNotifications();
+        $this->sendJson($notifications);
+    }
 }

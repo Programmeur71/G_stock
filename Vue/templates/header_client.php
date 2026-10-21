@@ -59,8 +59,8 @@
 
         <div class="d-flex align-items-center justify-content-between">
             <a href="ecommerce" class="logo d-flex align-items-center text-decoration-none">
-                <img src="assets/img/wdesktop.png" alt="mboaStock Logo" style="max-height: 40px;">
-                <span class="d-none d-lg-block fs-4 fw-bold ms-2">mboaStock</span>
+                <img src="assets/img/wdesktop.png" alt="mboaStock Logo" style="max-height: 70px;">
+                <!-- <span class="d-none d-lg-block fs-4 fw-bold ms-2">mboaStock</span> -->
             </a>
         </div><!-- End Logo -->
 
@@ -104,7 +104,7 @@
 
                 <li class="nav-item dropdown pe-3">
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="assets/img/wmobile.png" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['user']->prenom . ' ' . $_SESSION['user']->nom ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">

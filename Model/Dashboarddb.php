@@ -56,4 +56,29 @@ class Dashboarddb extends Model
 
         return $stats;
     }
+
+    public function getNotifications()
+    {
+        $notifications = [];
+
+        // 1. Produits en rupture ou stock bas (uniquement pour ceux présents dans la table stock)
+        $sql_stock = "SELECT p.nom, SUM(s.quantite) as total_stock, p.alert 
+                      FROM stock s 
+                      JOIN produit p ON s.id_produit = p.id_produit 
+                      GROUP BY s.id_produit 
+                      HAVING total_stock <= p.alert";
+        $r = $this->db->requette($sql_stock);
+        $notifications['stock'] = $this->db->recupere($r, false);
+
+        // 2. Commandes clients en attente
+        $sql_orders = "SELECT v.*, c.nom as client_nom, c.prenom as client_prenom 
+                       FROM vente v 
+                       JOIN client c ON v.id_client = c.id_client 
+                       WHERE v.statut = 'En attente' 
+                       ORDER BY v.date DESC";
+        $r = $this->db->requette($sql_orders);
+        $notifications['orders'] = $this->db->recupere($r, false);
+
+        return $notifications;
+    }
 }

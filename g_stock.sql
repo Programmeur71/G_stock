@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 19 mai 2026 à 06:54
+-- Généré le : ven. 29 mai 2026 à 12:04
 -- Version du serveur : 8.2.0
 -- Version de PHP : 8.2.13
 
@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `commande` (
   `statut` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_commande`),
   KEY `FK_commande_id_user` (`id_user`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `commande`
@@ -69,7 +69,9 @@ CREATE TABLE IF NOT EXISTS `commande` (
 
 INSERT INTO `commande` (`id_commande`, `id_user`, `date`, `total`, `statut`) VALUES
 (1, 1, '2026-05-17', 5000.00, 'Terminée'),
-(2, 1, '2026-05-17', 7500.00, 'Terminée');
+(2, 1, '2026-05-17', 7500.00, 'Terminée'),
+(3, 1, '2026-05-25', 1100.00, 'Terminée'),
+(4, 12, '2026-05-29', 50000.00, 'Terminée');
 
 -- --------------------------------------------------------
 
@@ -87,7 +89,7 @@ CREATE TABLE IF NOT EXISTS `detail_commande` (
   PRIMARY KEY (`id_detail_commande`),
   KEY `FK_detail_commande_id_commande` (`id_commande`),
   KEY `FK_detail_commande_id_produit` (`id_produit`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `detail_commande`
@@ -95,7 +97,10 @@ CREATE TABLE IF NOT EXISTS `detail_commande` (
 
 INSERT INTO `detail_commande` (`id_detail_commande`, `id_commande`, `id_produit`, `quantite`, `prix_unitaire`) VALUES
 (1, 1, 3, 10, 500.00),
-(2, 2, 3, 15, 500.00);
+(2, 2, 3, 15, 500.00),
+(3, 3, 1, 1, 500.00),
+(4, 3, 2, 1, 600.00),
+(5, 4, 4, 5, 10000.00);
 
 -- --------------------------------------------------------
 
@@ -113,7 +118,7 @@ CREATE TABLE IF NOT EXISTS `detail_vente` (
   PRIMARY KEY (`id_detail_vente`),
   KEY `FK_detail_vente_id_vente` (`id_vente`),
   KEY `FK_detail_vente_id_produit` (`id_produit`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `detail_vente`
@@ -121,7 +126,13 @@ CREATE TABLE IF NOT EXISTS `detail_vente` (
 
 INSERT INTO `detail_vente` (`id_detail_vente`, `id_vente`, `id_produit`, `quantite`, `prix`) VALUES
 (1, 1, 3, 1, 550.00),
-(2, 2, 3, 6, 550.00);
+(2, 2, 3, 6, 550.00),
+(3, 3, 3, 5, 550.00),
+(4, 4, 3, 3, 550.00),
+(5, 5, 1, 1, 600.00),
+(6, 5, 3, 3, 550.00),
+(7, 6, 3, 1, 550.00),
+(8, 7, 4, 3, 15000.00);
 
 -- --------------------------------------------------------
 
@@ -137,7 +148,7 @@ CREATE TABLE IF NOT EXISTS `fournisseur` (
   `email` varchar(50) DEFAULT NULL,
   `adresse` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id_fournisseur`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `fournisseur`
@@ -145,7 +156,8 @@ CREATE TABLE IF NOT EXISTS `fournisseur` (
 
 INSERT INTO `fournisseur` (`id_fournisseur`, `nom`, `prenom`, `email`, `adresse`) VALUES
 (1, 'zxczx', 'xzczxf', 'zxc@gmail.com', 'fdsd'),
-(2, 'cyc', 'cyc', 'cyc@gmail.com', 'dsdf');
+(2, 'cyc', 'cyc', 'cyc@gmail.com', 'dsdf'),
+(3, 'gaelle', 'p', 'gaelle@gmail.com', '694800100');
 
 -- --------------------------------------------------------
 
@@ -229,17 +241,19 @@ CREATE TABLE IF NOT EXISTS `produit` (
   `prix_achat` decimal(10,2) DEFAULT NULL,
   `prix_vente` decimal(10,2) DEFAULT NULL,
   `photo` varchar(255) DEFAULT NULL,
+  `alert` int DEFAULT '5',
   PRIMARY KEY (`id_produit`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `produit`
 --
 
-INSERT INTO `produit` (`id_produit`, `nom`, `prix_achat`, `prix_vente`, `photo`) VALUES
-(1, 'sasa', 500.00, 600.00, NULL),
-(2, 'ssd', 600.00, 500.00, '1779024054_6a09c0b62738c.png'),
-(3, 'xcz', 500.00, 550.00, '1779024494_6a09c26e4dcef.png');
+INSERT INTO `produit` (`id_produit`, `nom`, `prix_achat`, `prix_vente`, `photo`, `alert`) VALUES
+(1, 'sasa', 500.00, 600.00, '1779205398_6a0c85166f1fa.png', 5),
+(2, 'ssd', 600.00, 500.00, '1779024054_6a09c0b62738c.png', 5),
+(3, 'xcz', 500.00, 550.00, '1779024494_6a09c26e4dcef.png', 10),
+(4, 'saut de peinture', 10000.00, 15000.00, '1780055988_6a197fb4719bb.png', 10);
 
 -- --------------------------------------------------------
 
@@ -281,9 +295,11 @@ CREATE TABLE IF NOT EXISTS `role_permission` (
 --
 
 INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
+(1, 1),
 (2, 1),
 (2, 2),
 (2, 3),
+(1, 4),
 (2, 4),
 (2, 5),
 (2, 6),
@@ -292,14 +308,18 @@ INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (2, 9),
 (2, 10),
 (2, 11),
+(1, 12),
 (2, 12),
 (2, 13),
 (2, 14),
 (2, 15),
 (2, 16),
+(1, 17),
 (2, 17),
+(1, 18),
 (2, 18),
 (2, 19),
+(1, 20),
 (2, 20),
 (2, 21),
 (2, 22),
@@ -312,6 +332,7 @@ INSERT INTO `role_permission` (`id_role`, `id_permission`) VALUES
 (2, 29),
 (2, 30),
 (2, 31),
+(1, 32),
 (2, 32);
 
 -- --------------------------------------------------------
@@ -330,15 +351,18 @@ CREATE TABLE IF NOT EXISTS `stock` (
   PRIMARY KEY (`id_stock`),
   KEY `FK_stock_id_produit` (`id_produit`),
   KEY `FK_stock_id_fournisseur` (`id_fournisseur`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `stock`
 --
 
 INSERT INTO `stock` (`id_stock`, `id_produit`, `id_fournisseur`, `quantite`, `date_peremption`) VALUES
-(1, 3, 1, 3, '2026-06-07'),
-(2, 3, 2, 15, '2026-10-04');
+(1, 3, 1, 0, '2026-06-07'),
+(2, 3, 2, 4, '2026-10-04'),
+(3, 1, 2, 1, '2026-05-31'),
+(4, 2, 2, 1, '2026-06-07'),
+(5, 4, 3, 2, '2026-05-29');
 
 -- --------------------------------------------------------
 
@@ -358,7 +382,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id_user`),
   UNIQUE KEY `email` (`email`),
   KEY `FK_users_id_client` (`id_client`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `users`
@@ -369,7 +393,8 @@ INSERT INTO `users` (`id_user`, `id_client`, `nom`, `prenom`, `contact`, `email`
 (2, 1, 'aaaa', 'aaa', '673683509', 'cyriasc@gmail.com', '$2y$10$NLfZSLEDHu6y8f.d/XNyku4Ad8Pypx5Jd8by2LsApzL2hv8SsByS.'),
 (3, 2, 'xczx', 'xzczxc', '655656558', 'zxcz@gmail.com', '$2y$10$8TwtZGkBvyVHHcF./cqpduux0fT.05jnMEc1rLVyZzAzfjTmDtlwa'),
 (4, NULL, 'dd', 'ddd', '650556598', 'sdasd@dfdsf.cm', '$2y$10$9Hc7ervzSHCzSO5eyu1FqeNghpHy5kQv1ztO6dAII7.E.LZsYLaUe'),
-(11, NULL, 'vvv', 'vvv', '655986321', 'vvv@gmail.com', '$2y$10$CbPVdkv20quD5ej2jBXHTOAN1PqEogilm/uehxYpkwpic910DW5C2');
+(11, NULL, 'vvv', 'vvv', '655986321', 'vvv@gmail.com', '$2y$10$CbPVdkv20quD5ej2jBXHTOAN1PqEogilm/uehxYpkwpic910DW5C2'),
+(12, NULL, 'lea', 'ivana', '694800100', 'lea@gmail.com', '$2y$10$KZBFWkBawHHJiY8KnupDYOtNUTLRVJt89UiSnwr3mW2iFcCiT8nwK');
 
 -- --------------------------------------------------------
 
@@ -392,8 +417,10 @@ CREATE TABLE IF NOT EXISTS `user_role` (
 INSERT INTO `user_role` (`id_user`, `id_role`) VALUES
 (2, 1),
 (3, 1),
+(1, 2),
 (4, 2),
-(11, 2);
+(11, 2),
+(12, 2);
 
 -- --------------------------------------------------------
 
@@ -412,7 +439,7 @@ CREATE TABLE IF NOT EXISTS `vente` (
   PRIMARY KEY (`id_vente`),
   KEY `FK_vente_id_user` (`id_user`),
   KEY `FK_vente_id_client` (`id_client`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Déchargement des données de la table `vente`
@@ -420,7 +447,12 @@ CREATE TABLE IF NOT EXISTS `vente` (
 
 INSERT INTO `vente` (`id_vente`, `id_user`, `id_client`, `date`, `total`, `statut`) VALUES
 (1, 1, 2, '2026-05-17', 550.00, 'Livré'),
-(2, 1, 1, '2026-05-19', 3300.00, 'Livré');
+(2, 1, 1, '2026-05-19', 3300.00, 'Livré'),
+(3, 2, 1, '2026-05-20', 2750.00, 'Livré'),
+(4, 2, 1, '2026-05-21', 1650.00, 'Livré'),
+(5, 2, 1, '2026-05-29', 2250.00, 'En attente'),
+(6, 1, 2, '2026-05-29', 550.00, 'Livré'),
+(7, 12, 2, '2026-05-29', 45000.00, 'Livré');
 
 --
 -- Contraintes pour les tables déchargées

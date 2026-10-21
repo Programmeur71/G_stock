@@ -30,4 +30,10 @@ class Ventedb extends Model
         $rqt = $this->db->requette($sql, [$id_vente]);
         return $this->db->recupere($rqt, false);
     }
+
+    public function getByClient($id_client) {
+        $sql = "SELECT * FROM {$this->table} WHERE id_client = ? ORDER BY date DESC";
+        $rqt = $this->db->requette($sql, [$id_client]);
+        return $this->db->recupere($rqt, false);
+    }
 }

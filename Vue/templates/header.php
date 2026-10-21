@@ -78,6 +78,65 @@
                 "sortDescending": ": activer pour trier la colonne par ordre décroissant"
             }
         };
+
+        function loadNotifications() {
+            $.get('api.php?entity=dashboard&action=getNotifications', function(data) {
+                let count = data.stock.length + data.orders.length;
+                $('#notification-count').text(count);
+                
+                let html = `
+                    <li class="dropdown-header">
+                        Vous avez ${count} nouvelles notifications
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                `;
+                
+                // Notifications Stock
+                data.stock.forEach(item => {
+                    let color = item.total_stock == 0 ? 'text-danger' : 'text-warning';
+                    let icon = item.total_stock == 0 ? 'bi-x-circle' : 'bi-exclamation-circle';
+                    html += `
+                        <li class="notification-item">
+                            <i class="bi ${icon} ${color}"></i>
+                            <div>
+                                <h4>${item.total_stock == 0 ? 'Rupture' : 'Stock Bas'}</h4>
+                                <p>${item.nom} : ${item.total_stock} restant(s)</p>
+                            </div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                    `;
+                });
+                
+                // Notifications Commandes
+                data.orders.forEach(order => {
+                    html += `
+                        <li class="notification-item">
+                            <i class="bi bi-cart-check text-primary"></i>
+                            <div>
+                                <h4>Nouvelle commande</h4>
+                                <p>${order.client_nom} ${order.client_prenom}</p>
+                                <p>${parseFloat(order.total).toLocaleString()} FCFA</p>
+                            </div>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                    `;
+                });
+                
+                html += `
+                    <li class="dropdown-footer">
+                        <a href="dashbord">Voir le tableau de bord</a>
+                    </li>
+                `;
+                
+                $('#notification-list').html(html);
+            }, 'json');
+        }
+
+        $(document).ready(function() {
+            loadNotifications();
+            // Rafraîchir toutes les 2 minutes
+            setInterval(loadNotifications, 120000);
+        });
     </script>
 
 </head>
@@ -108,73 +167,13 @@
 
                     <a class="nav-link nav-icon" href="#" data-bs-toggle="dropdown">
                         <i class="bi bi-bell"></i>
-                        <span class="badge bg-primary badge-number">4</span>
+                        <span class="badge bg-primary badge-number" id="notification-count">0</span>
                     </a><!-- End Notification Icon -->
 
-                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications">
+                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow notifications" id="notification-list">
                         <li class="dropdown-header">
-                            You have 4 new notifications
-                            <a href="#"><span class="badge rounded-pill bg-primary p-2 ms-2">View all</span></a>
+                            Chargement des notifications...
                         </li>
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-exclamation-circle text-warning"></i>
-                            <div>
-                                <h4>Lorem Ipsum</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>30 min. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-x-circle text-danger"></i>
-                            <div>
-                                <h4>Atque rerum nesciunt</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>1 hr. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-check-circle text-success"></i>
-                            <div>
-                                <h4>Sit rerum fuga</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>2 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-
-                        <li class="notification-item">
-                            <i class="bi bi-info-circle text-primary"></i>
-                            <div>
-                                <h4>Dicta reprehenderit</h4>
-                                <p>Quae dolorem earum veritatis oditseno</p>
-                                <p>4 hrs. ago</p>
-                            </div>
-                        </li>
-
-                        <li>
-                            <hr class="dropdown-divider">
-                        </li>
-                        <li class="dropdown-footer">
-                            <a href="#">Show all notifications</a>
-                        </li>
-
                     </ul><!-- End Notification Dropdown Items -->
 
                 </li><!-- End Notification Nav -->
@@ -183,7 +182,7 @@
                 <li class="nav-item dropdown pe-3">
 
                     <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
-                        <img src="assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        <img src="assets/img/wmobile.png" alt="Profile" class="rounded-circle">
                         <span class="d-none d-md-block dropdown-toggle ps-2"><?= $_SESSION['user']->prenom . ' ' . $_SESSION['user']->nom ?></span>
                     </a><!-- End Profile Iamge Icon -->
 
@@ -238,6 +237,50 @@
                 </a>
             </li>
 
+            <?php if(hasPermission('VOIR_VENTE')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?=$route[0]=="vente"?"":"collapsed"?>" href="vente">
+                    <i class="bi bi-cash-stack"></i>
+                    <span>Nouvelle Vente</span>
+                </a>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link <?=$route[0]=="Historique"?"":"collapsed"?>" href="Historique">
+                    <i class="bi bi-clock-history"></i>
+                    <span>Historique Ventes</span>
+                </a>
+            </li>
+            <?php endif; ?>
+
+            <?php if(hasPermission('VOIR_STOCK')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?=$route[0]=="stock"?"":"collapsed"?>" href="stock">
+                    <i class="bi bi-box"></i>
+                    <span>Stocks</span>
+                </a>
+            </li>
+            <?php endif; ?>
+
+            <?php if(hasPermission('VOIR_COMMANDE')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?=$route[0]=="commande"?"":"collapsed"?>" href="commande">
+                    <i class="bi bi-cart"></i>
+                    <span>Nouvel Appro.</span>
+                </a>
+            </li>
+            <?php endif; ?>
+
+
+            <?php if(hasPermission('VOIR_COMMANDE')): ?>
+            <li class="nav-item">
+                <a class="nav-link <?=$route[0]=="Approvisionnement"?"":"collapsed"?>" href="Approvisionnement">
+                    <i class="bi bi-journal-check"></i>
+                    <span>Historique Appro.</span>
+                </a>
+            </li>
+            <?php endif; ?>
+
             <?php if(hasPermission('VOIR_CLIENT')): ?>
             <li class="nav-item">
                 <a class="nav-link <?=$route[0]=="client"?"":"collapsed"?>" href="client">
@@ -261,49 +304,6 @@
                 <a class="nav-link <?=$route[0]=="produit"?"":"collapsed"?>" href="produit">
                     <i class="bi bi-box-seam"></i>
                     <span>Produits</span>
-                </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if(hasPermission('VOIR_STOCK')): ?>
-            <li class="nav-item">
-                <a class="nav-link <?=$route[0]=="stock"?"":"collapsed"?>" href="stock">
-                    <i class="bi bi-box"></i>
-                    <span>Stocks</span>
-                </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if(hasPermission('VOIR_COMMANDE')): ?>
-            <li class="nav-item">
-                <a class="nav-link <?=$route[0]=="commande"?"":"collapsed"?>" href="commande">
-                    <i class="bi bi-cart"></i>
-                    <span>Nouvel Appro.</span>
-                </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if(hasPermission('VOIR_VENTE')): ?>
-            <li class="nav-item">
-                <a class="nav-link <?=$route[0]=="vente"?"":"collapsed"?>" href="vente">
-                    <i class="bi bi-cash-stack"></i>
-                    <span>Nouvelle Vente</span>
-                </a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link <?=$route[0]=="Historique"?"":"collapsed"?>" href="Historique">
-                    <i class="bi bi-clock-history"></i>
-                    <span>Historique Ventes</span>
-                </a>
-            </li>
-            <?php endif; ?>
-
-            <?php if(hasPermission('VOIR_COMMANDE')): ?>
-            <li class="nav-item">
-                <a class="nav-link <?=$route[0]=="Approvisionnement"?"":"collapsed"?>" href="Approvisionnement">
-                    <i class="bi bi-journal-check"></i>
-                    <span>Historique Appro.</span>
                 </a>
             </li>
             <?php endif; ?>

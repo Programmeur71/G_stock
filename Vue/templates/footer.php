@@ -3,7 +3,7 @@
 <!-- ======= Footer ======= -->
 <footer id="footer" class="footer">
     <div class="copyright">
-        &copy; Copyright <strong><span>G_Stock</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>MboaStock</span></strong>. All Rights Reserved
     </div>
 </footer><!-- End Footer -->
 

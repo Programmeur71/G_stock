@@ -26,8 +26,12 @@ class UtilisateurController extends Controller {
             
             // LOG DE DÉBOGAGE
             error_log("Utilisateur connecté: " . $user->email);
-            error_log("Rôle détecté: " . $user->role);
+            error_log("Rôle détecté: " . ($user->role ?? 'AUCUN'));
             error_log("Nombre de permissions: " . count($user->permissions));
+
+            if ($user->id_client === null && empty($user->role)) {
+                error_log("ALERTE: L'utilisateur personnel " . $user->email . " n'a aucun rôle. Les menus seront masqués.");
+            }
             
             echo json_encode(['status' => 'success', 'message' => 'Connexion réussie', 'role' => $user->role]);
         } else {
@@ -84,12 +88,13 @@ class UtilisateurController extends Controller {
             $finalPassword = password_hash($password, PASSWORD_DEFAULT);
         }
 
-        $result = $this->model->save($nom, $prenom, $contact, $email, $finalPassword, $id_user);
+        $result = $this->model->save($nom, $prenom, $contact, $email, $finalPassword, $currentUser->id_client, $id_user);
 
         if ($result[0]) {
             // Mettre à jour la session
             $user = $this->model->getById($id_user);
             $user->role = $this->model->getUserRole($id_user);
+            $user->permissions = $this->model->getUserPermissions($id_user);
             $_SESSION['user'] = $user;
             echo json_encode(['status' => 'success', 'message' => 'Profil mis à jour avec succès']);
         } else {

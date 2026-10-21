@@ -76,41 +76,82 @@ $(document).ready(function() {
 
 function loadVentes() {
     $.get('api.php?entity=vente&action=listAll', function(data) {
+        // console.log("Données de ventes reçues :", data);
         if ($.fn.DataTable.isDataTable('#ventesTable')) {
             $('#ventesTable').DataTable().destroy();
         }
+        
+        if (!Array.isArray(data)) {
+            console.error("Format de données invalide pour les ventes :", data);
+            $('#ventesTable tbody').html('<tr><td colspan="7" class="text-center text-danger">Erreur de chargement des données</td></tr>');
+            return;
+        }
+
         let rows = '';
-        data.forEach(v => {
-            let client = v.client_nom ? v.client_prenom + ' ' + v.client_nom : '<span class="text-muted">Inconnu</span>';
-            let vendeur = v.vendeur_nom || 'Système';
-            let badge = v.statut === 'Livré' ? 'bg-success' : (v.statut === 'En attente' ? 'bg-warning' : 'bg-secondary');
-            
-            rows += `<tr>
-                <td>#${v.id_vente}</td>
-                <td>${v.date}</td>
-                <td>${client}</td>
-                <td>${vendeur}</td>
-                <td class="fw-bold">${parseFloat(v.total).toLocaleString()} FCFA</td>
-                <td><span class="badge ${badge}">${v.statut}</span></td>
-                <td class="actions-column">
-                    <button class="btn btn-sm btn-info text-white view-details-vente" data-id="${v.id_vente}" title="Voir détails">
-                        <i class="bi bi-eye"></i>
-                    </button>
-                    <a href="assets/fpdf/facture.php?id=${v.id_vente}" target="_blank" class="btn btn-sm btn-primary" title="Facture A4">
-                        <i class="bi bi-file-earmark-pdf"></i>
-                    </a>
-                    <a href="assets/fpdf/tiket.php?id=${v.id_vente}" target="_blank" class="btn btn-sm btn-success text-white" title="Ticket Thermique">
-                        <i class="bi bi-receipt"></i>
-                    </a>
-                </td>
-            </tr>`;
-        });
-        $('#ventesTable tbody').html(rows);
-        $('#ventesTable').DataTable({
-            responsive: true,
-            language: datatable_fr,
-            order: [[0, 'desc']]
-        });
+        try {
+            data.forEach(v => {
+                let client = v.client_nom ? v.client_prenom + ' ' + v.client_nom : '<span class="text-muted">Inconnu</span>';
+                let vendeur = v.vendeur_nom || 'Système';
+                let badge = v.statut === 'Livré' ? 'bg-success' : (v.statut === 'En attente' ? 'bg-warning' : 'bg-secondary');
+                
+                rows += `<tr>
+                    <td>#${v.id_vente}</td>
+                    <td>${v.date}</td>
+                    <td>${client}</td>
+                    <td>${vendeur}</td>
+                    <td class="fw-bold">${parseFloat(v.total).toLocaleString()} FCFA</td>
+                    <td><span class="badge ${badge}">${v.statut}</span></td>
+                    <td class="actions-column">
+                        <button class="btn btn-sm btn-info text-white view-details-vente" data-id="${v.id_vente}" title="Voir détails">
+                            <i class="bi bi-eye"></i>
+                        </button>
+                        ${v.statut === 'En attente' ? `
+                            <button class="btn btn-sm btn-warning text-white" onclick="confirmDelivery(${v.id_vente})" title="Confirmer la livraison">
+                                <i class="bi bi-check-circle"></i> Livrer
+                            </button>
+                        ` : ''}
+                        <a href="assets/fpdf/facture.php?id=${v.id_vente}" target="_blank" class="btn btn-sm btn-primary" title="Facture A4">
+                            <i class="bi bi-file-earmark-pdf"></i>
+                        </a>
+                        <a href="assets/fpdf/tiket.php?id=${v.id_vente}" target="_blank" class="btn btn-sm btn-success text-white" title="Ticket Thermique">
+                            <i class="bi bi-receipt"></i>
+                        </a>
+                    </td>
+                </tr>`;
+            });
+            $('#ventesTable tbody').html(rows);
+            $('#ventesTable').DataTable({
+                responsive: true,
+                language: datatable_fr,
+                order: [[0, 'desc']]
+            });
+        } catch (e) {
+            console.error("Erreur lors de la génération du tableau de ventes :", e);
+            $('#ventesTable tbody').html('<tr><td colspan="7" class="text-center text-danger">Erreur d\'affichage des données</td></tr>');
+        }
+    }, 'json').fail(function(xhr) {
+        console.error("Échec de la requête AJAX listAll :", xhr.responseText);
+    });
+}
+
+function confirmDelivery(id) {
+    $.post('api.php?entity=vente&action=confirmDelivery', {id_vente: id}, function(res) {
+        if(res.status === 'success') {
+            loadVentes();
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true
+            });
+            Toast.fire({
+                icon: 'success',
+                title: 'Livraison confirmée'
+            });
+        } else {
+            Swal.fire('Erreur', res.message, 'error');
+        }
     }, 'json');
 }
 </script>
